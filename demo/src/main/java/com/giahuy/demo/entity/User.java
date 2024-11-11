@@ -1,0 +1,37 @@
+package com.giahuy.demo.entity;
+
+import java.time.LocalDate;
+import java.util.Set;
+
+
+import jakarta.annotation.Nullable;
+import jakarta.persistence.*;
+
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id;
+
+    String username;
+    String password;
+    String firstName;
+    LocalDate dob;
+    String lastName;
+
+    @Nullable
+    String image;
+
+    @Nullable // Cho phép file là null
+    @ManyToMany
+    Set<Role> roles;
+}
