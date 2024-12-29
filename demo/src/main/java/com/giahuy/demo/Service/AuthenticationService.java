@@ -30,6 +30,9 @@ import com.nimbusds.jwt.SignedJWT;
 
 import java.text.ParseException;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.StringJoiner;
@@ -61,23 +64,36 @@ public class AuthenticationService {
     @Value("${jwt.refreshable-duration}")
     protected long REFRESH_DURATION;
 
-
-
     public IntrospectResponse introspect(IntrospectRequest request)
             throws JOSEException, ParseException {
 
         var token =  request.getToken();
 
+        Date expirationTime = null;
+
         boolean isValid = true;
 
         try {
             verifyToken(token,false);
+
+            SignedJWT signedJWT = SignedJWT.parse(token); // Giải mã token
+            expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime(); // Lấy thời gian hết hạn (exp)
+
         } catch(AppException e) {
             isValid = false;
+        }
+        String humanReadableExpiration = null;
+        if (expirationTime != null) {
+            Instant instant = Instant.ofEpochSecond(expirationTime.getTime() / 1000);
+            LocalDateTime expirationDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            humanReadableExpiration = expirationDateTime.format(formatter);
         }
 
         return IntrospectResponse.builder()
                 .valid(isValid)
+                .exp(humanReadableExpiration)
+//                .exp(String.valueOf(expirationTime != null ? expirationTime.getTime() / 1000 : null)) // Chuyển đổi time sang giây nếu có
                 .build();
     }
 
@@ -89,10 +105,11 @@ public class AuthenticationService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
 
         if(!authenticated)
-            throw new AppException(ErrorCode.UNAUTHENTICATED);
+            throw new AppException(ErrorCode.PASSWORD_WRONG);
 
         var token = generateToken(user);
         return AuthenticationResponse.builder()

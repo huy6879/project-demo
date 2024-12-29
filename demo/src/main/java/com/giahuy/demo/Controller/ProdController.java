@@ -29,7 +29,7 @@ public class ProdController {
                 .build();
     }
 
-    @GetMapping("/all-prods")
+    @GetMapping
     ApiResponse<List<ProductResponse>> getAll(){
         return ApiResponse.<List<ProductResponse>>builder()
                 .result(prodService.getAllProducts())

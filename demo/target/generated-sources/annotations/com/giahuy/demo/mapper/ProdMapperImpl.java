@@ -1,15 +1,17 @@
 package com.giahuy.demo.mapper;
 
 import com.giahuy.demo.dto.request.ProductCreationRequest;
+import com.giahuy.demo.dto.response.CategoryResponse;
 import com.giahuy.demo.dto.response.ProductResponse;
+import com.giahuy.demo.entity.Category;
 import com.giahuy.demo.entity.Product;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-11T15:13:01+0700",
-    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 22.0.1 (Oracle Corporation)"
+    date = "2024-12-17T21:01:47+0700",
+    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 22.0.2 (Amazon.com Inc.)"
 )
 @Component
 public class ProdMapperImpl implements ProdMapper {
@@ -26,6 +28,7 @@ public class ProdMapperImpl implements ProdMapper {
         product.name( request.getName() );
         product.price( request.getPrice() );
         product.quantity( request.getQuantity() );
+        product.unit( request.getUnit() );
 
         return product.build();
     }
@@ -43,8 +46,22 @@ public class ProdMapperImpl implements ProdMapper {
         productResponse.price( product.getPrice() );
         productResponse.quantity( product.getQuantity() );
         productResponse.unit( product.getUnit() );
-        productResponse.category( product.getCategory().getName() );
+        productResponse.category_id( categoryToCategoryResponse( product.getCategory_id() ) );
 
         return productResponse.build();
+    }
+
+    protected CategoryResponse categoryToCategoryResponse(Category category) {
+        if ( category == null ) {
+            return null;
+        }
+
+        CategoryResponse.CategoryResponseBuilder categoryResponse = CategoryResponse.builder();
+
+        categoryResponse.id( category.getId() );
+        categoryResponse.name( category.getName() );
+        categoryResponse.description( category.getDescription() );
+
+        return categoryResponse.build();
     }
 }

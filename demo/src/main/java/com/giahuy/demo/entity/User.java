@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
@@ -20,6 +21,7 @@ import lombok.experimental.FieldDefaults;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
     String id;
 
     String username;
@@ -34,4 +36,10 @@ public class User {
     @Nullable // Cho phép file là null
     @ManyToMany
     Set<Role> roles;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user_id", cascade = CascadeType.ALL)
+    Set<Order> orders;
+
+
 }

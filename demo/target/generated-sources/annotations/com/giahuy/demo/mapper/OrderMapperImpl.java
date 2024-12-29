@@ -1,10 +1,11 @@
 package com.giahuy.demo.mapper;
 
-import com.giahuy.demo.dto.request.UserCreationRequest;
-import com.giahuy.demo.dto.request.UserUpdateRequest;
+import com.giahuy.demo.dto.request.OrderCreationRequest;
+import com.giahuy.demo.dto.response.OrderResponse;
 import com.giahuy.demo.dto.response.PermissionResponse;
 import com.giahuy.demo.dto.response.RoleResponse;
 import com.giahuy.demo.dto.response.UserResponse;
+import com.giahuy.demo.entity.Order;
 import com.giahuy.demo.entity.Permission;
 import com.giahuy.demo.entity.Role;
 import com.giahuy.demo.entity.User;
@@ -19,55 +20,35 @@ import org.springframework.stereotype.Component;
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 22.0.2 (Amazon.com Inc.)"
 )
 @Component
-public class UserMapperImpl implements UserMapper {
+public class OrderMapperImpl implements OrderMapper {
 
     @Override
-    public User toUser(UserCreationRequest request) {
+    public Order toOrder(OrderCreationRequest request) {
         if ( request == null ) {
             return null;
         }
 
-        User.UserBuilder user = User.builder();
+        Order.OrderBuilder order = Order.builder();
 
-        user.username( request.getUsername() );
-        user.password( request.getPassword() );
-        user.firstName( request.getFirstName() );
-        user.dob( request.getDob() );
-        user.lastName( request.getLastName() );
+        order.id( request.getId() );
+        order.orderDate( request.getOrderDate() );
 
-        return user.build();
+        return order.build();
     }
 
     @Override
-    public UserResponse toUserResponse(User user) {
-        if ( user == null ) {
+    public OrderResponse toOrderResponse(Order order) {
+        if ( order == null ) {
             return null;
         }
 
-        UserResponse.UserResponseBuilder userResponse = UserResponse.builder();
+        OrderResponse.OrderResponseBuilder orderResponse = OrderResponse.builder();
 
-        userResponse.id( user.getId() );
-        userResponse.username( user.getUsername() );
-        userResponse.firstName( user.getFirstName() );
-        userResponse.lastName( user.getLastName() );
-        userResponse.dob( user.getDob() );
-        userResponse.image( user.getImage() );
-        userResponse.roles( roleSetToRoleResponseSet( user.getRoles() ) );
+        orderResponse.id( order.getId() );
+        orderResponse.orderDate( order.getOrderDate() );
+        orderResponse.user_id( userToUserResponse( order.getUser_id() ) );
 
-        return userResponse.build();
-    }
-
-    @Override
-    public void updateUser(User user, UserUpdateRequest request) {
-        if ( request == null ) {
-            return;
-        }
-
-        user.setUsername( request.getUsername() );
-        user.setPassword( request.getPassword() );
-        user.setFirstName( request.getFirstName() );
-        user.setDob( request.getDob() );
-        user.setLastName( request.getLastName() );
+        return orderResponse.build();
     }
 
     protected PermissionResponse permissionToPermissionResponse(Permission permission) {
@@ -121,5 +102,23 @@ public class UserMapperImpl implements UserMapper {
         }
 
         return set1;
+    }
+
+    protected UserResponse userToUserResponse(User user) {
+        if ( user == null ) {
+            return null;
+        }
+
+        UserResponse.UserResponseBuilder userResponse = UserResponse.builder();
+
+        userResponse.id( user.getId() );
+        userResponse.username( user.getUsername() );
+        userResponse.firstName( user.getFirstName() );
+        userResponse.lastName( user.getLastName() );
+        userResponse.dob( user.getDob() );
+        userResponse.image( user.getImage() );
+        userResponse.roles( roleSetToRoleResponseSet( user.getRoles() ) );
+
+        return userResponse.build();
     }
 }

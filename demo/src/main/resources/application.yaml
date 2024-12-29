@@ -3,13 +3,14 @@ server:
   servlet:
     context-path: /muahang88
 
+
 spring:
   datasource:
     url: ${DBMS_CONNECTION}
     username: ${DBMS_USERNAME}
     password: ${DBMS_PASSWORD}
   jpa:
-    hibernate:
+    hibernate: 
       ddl-auto: update
     show-sql: true
 
@@ -17,3 +18,14 @@ jwt:
   singerKey: "rraxXtzs+kLoJ0OA7bXsjS6plwLxx3yAndpEITNyx2n8JJNuiaU2K+wnNG2BoZmp"
   valid-duration : 3600 #in second
   refreshable-duration: 360000
+
+payment:
+  vnPAY:
+    url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
+    tmnCode: "W4ZF5LA3"
+    secretKey: "MU86A2BNK23HMKEMOLVXVXQKRD6KRTXQ"
+    returnUrl: "http://localhost:8080/muahang88/receipt/add"
+    version: "2.1.0"
+    command: "pay"
+    orderType: "other"
+

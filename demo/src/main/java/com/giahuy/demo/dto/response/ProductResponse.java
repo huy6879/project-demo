@@ -20,5 +20,5 @@ public class ProductResponse {
     Integer price;
     Integer quantity;
     Integer unit;
-    String category;  // Nếu chỉ cần tên category
+    CategoryResponse category_id;
 }

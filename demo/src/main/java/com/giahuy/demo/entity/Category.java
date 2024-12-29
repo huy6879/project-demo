@@ -1,13 +1,9 @@
 package com.giahuy.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -27,7 +23,8 @@ public class Category {
     String name;
     @Column(name = "description")
     String description;
+
     @JsonIgnore
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "category_id", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     Set<Product> products;
 }

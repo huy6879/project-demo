@@ -43,8 +43,6 @@ public class UserService {
 
     public UserResponse createUser(UserCreationRequest request) {
 
-        log.info("Service: createUser");
-
         if (userRepository.existsByUsername(request.getUsername()))
             throw new AppException(ErrorCode.USER_EXISTED);
 
@@ -62,7 +60,6 @@ public class UserService {
         } else {
             u.setImage(null);
         }
-
         return userMapper.toUserResponse(userRepository.save(u));
     }
 

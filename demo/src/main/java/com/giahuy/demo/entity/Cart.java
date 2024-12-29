@@ -1,16 +1,17 @@
-package com.giahuy.demo.dto.request;
+package com.giahuy.demo.entity;
 
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CategoryRequest {
+public class Cart {
     Integer id;
-    String name;
-    String description;
+    Integer quantity;
+    Integer price;
 }

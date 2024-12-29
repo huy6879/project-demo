@@ -3,16 +3,17 @@ package com.giahuy.demo.Service;
 
 import com.giahuy.demo.dto.request.ProductCreationRequest;
 import com.giahuy.demo.dto.response.ProductResponse;
+import com.giahuy.demo.entity.Category;
 import com.giahuy.demo.entity.Product;
 import com.giahuy.demo.exception.AppException;
 import com.giahuy.demo.exception.ErrorCode;
 import com.giahuy.demo.mapper.ProdMapper;
+import com.giahuy.demo.repository.CateRepository;
 import com.giahuy.demo.repository.ProductRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ public class ProService {
 
     ProductRepository productRepository;
     ProdMapper prodMapper;
+    CateRepository cateRepository;
 
     public ProductResponse addProduct(ProductCreationRequest request) {
 
@@ -33,6 +35,11 @@ public class ProService {
             throw new AppException(ErrorCode.PROD_EXISTED);
 
         Product prod = prodMapper.toProduct(request);
+
+        Category category = cateRepository.findById(request.getCategory_id())
+                .orElseThrow(() -> new AppException(ErrorCode.CATE_NOT_EXISTED));
+
+        prod.setCategory_id(category);
 
         prod = productRepository.save(prod);
 
@@ -44,6 +51,7 @@ public class ProService {
         return productRepository.findAll().stream()
                 .map(prodMapper::toProductResponse).toList();
     }
+
 
 
 }

@@ -9,6 +9,7 @@ import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -16,6 +17,7 @@ import java.text.ParseException;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationController {
 
@@ -43,7 +45,6 @@ public class AuthenticationController {
     ApiResponse<IntrospectResponse> introspect(@RequestBody IntrospectRequest introspectRequest)
             throws ParseException, JOSEException {
         var rs = authenticationService.introspect(introspectRequest);
-
         return ApiResponse.<IntrospectResponse>builder()
                 .result(rs)
                 .build();

@@ -21,7 +21,7 @@ public class ProductCreationRequest {
 
     Integer quantity;
 
-    Integer stock;
+    Integer unit;
 
     @Nullable
     String category_id;

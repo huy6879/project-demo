@@ -1,4 +1,4 @@
-package com.giahuy.demo.dto.request;
+package com.giahuy.demo.dto.response;
 
 
 import lombok.*;
@@ -9,8 +9,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CategoryRequest {
-    Integer id;
-    String name;
-    String description;
+public class PaymentResponse {
+     String code;
+     String message;
+     String paymentUrl;
 }

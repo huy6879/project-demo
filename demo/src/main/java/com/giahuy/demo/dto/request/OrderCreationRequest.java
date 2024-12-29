@@ -1,16 +1,21 @@
 package com.giahuy.demo.dto.request;
 
 
+import jakarta.annotation.Nullable;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CategoryRequest {
+public class OrderCreationRequest {
     Integer id;
-    String name;
-    String description;
+    LocalDateTime orderDate;
+
+    @Nullable
+    String user_id;
 }
