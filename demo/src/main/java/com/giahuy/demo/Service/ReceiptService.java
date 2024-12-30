@@ -33,7 +33,7 @@ public class ReceiptService {
 
 
     @Transactional
-    public boolean addReceipt(Map<String, Cart> carts)
+    public boolean addReceipt(Map<String, Cart> carts, String vnp_TxnRef)
     {
         try{
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -53,6 +53,7 @@ public class ReceiptService {
                     .toLocalDateTime();
 
             Order order = new Order();
+            order.setId(Integer.valueOf(vnp_TxnRef));
             order.setUser_id(user);
             order.setOrderDate(localDateTime);
             orderRepo.save(order);
@@ -81,8 +82,9 @@ public class ReceiptService {
     public Integer calculateTotalAmount(Map<String, Cart> carts) {
         Integer totalAmount = 0;
         for (Cart cart : carts.values()) {
-            totalAmount += cart.getPrice();
+            totalAmount += (cart.getPrice() * cart.getQuantity());
         }
         return totalAmount;
     }
+
 }

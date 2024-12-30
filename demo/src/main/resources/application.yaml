@@ -24,7 +24,7 @@ payment:
     url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
     tmnCode: "W4ZF5LA3"
     secretKey: "MU86A2BNK23HMKEMOLVXVXQKRD6KRTXQ"
-    returnUrl: "http://localhost:8080/muahang88/receipt/add"
+    returnUrl: "http://localhost:8080/muahang88/payment/vn-pay-callback"
     version: "2.1.0"
     command: "pay"
     orderType: "other"

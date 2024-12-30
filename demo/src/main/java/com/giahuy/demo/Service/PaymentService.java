@@ -18,10 +18,11 @@ import java.util.Map;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PaymentService {
     private final VNPAYConfig vnPayConfig;
-    public PaymentResponse createVnPayPayment(Map<String, Cart> carts, Integer totalAmount, HttpServletRequest request) {
+    public PaymentResponse createVnPayPayment(Map<String, Cart> carts, String vnp_TxnRef, Integer totalAmount, HttpServletRequest request) {
         long amount = totalAmount*100L;
         String bankCode = "NCB";
         Map<String, String> vnpParamsMap = vnPayConfig.getVNPayConfig();
+        vnpParamsMap.put("vnp_TxnRef", vnp_TxnRef);
         vnpParamsMap.put("vnp_Amount", String.valueOf(amount));
         if (bankCode != null && !bankCode.isEmpty()) {
             vnpParamsMap.put("vnp_BankCode", bankCode);

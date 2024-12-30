@@ -18,7 +18,7 @@ import java.util.Set;
 @Table(name = "Orders")  // Đổi tên bảng từ 'order' thành 'order_table'
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     Integer id;
